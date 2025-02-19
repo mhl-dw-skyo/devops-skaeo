@@ -1,0 +1,36 @@
+EKS Cluster  : Master Node, APi server, scheduler, controller  -> AWS -> 73$
+
+Default node group (EC2) -> Autoscaling group : 1 node t4g.medium -> addons + karpenter
+
+Karpenter : node (EC2) > 1. stage : Node pool (arm, spot, t4, c5, labels, taints) 2. Prod > on-demand,taints 
+
+
+ALB Controller : Ingress Loadbalancer
+
+Pod deployments: stage-values > Key: value, scheduler -> 5 ,2  Request: cpu: 100 and memory:1G and limits 
+
+Prod-values > prod 
+
+ingress : group-name: stage  -> seperate LB   group-name:prod > seperate LB
+host: skaeo-stage. path
+
+Prometheus and visua in grafana  : cpu and memory 
+KEDA > read from prometheus metric CPU>70% -> pod HPA
+
+ELK: Logging  : namespace-appp-index
+
+
+
+
+1. ALB controller -> ingress
+2. Prometheus & grafana  -> ingress object ,group-name as stage -> system monitoring
+3. KEDA - for HPA
+4. loki -> log , /disk1, sysout -> logs 
+
+
+1. Applications:
+Helm chart: package manager -> backend -> ingress , serviceaccount -> s3 bucket, volumes
+
+values -> stage.yml, prod.yml
+
+3. Redis -> statefulset
