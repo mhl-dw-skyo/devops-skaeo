@@ -19,7 +19,7 @@ KEDA > read from prometheus metric CPU>70% -> pod HPA
 
 ELK: Logging  : namespace-appp-index
 
-
+elasticsearch, kibana, fluentbit
 
 
 1. ALB controller -> ingress

@@ -1,6 +1,28 @@
 env        = "stage-eu"
 aws_region = "eu-central-1"
 
-instance_types_karpenter = ["t4g.medium", "c6g.xlarge", "c6g.2xlarge"]
+
 
 enable_karpenter = true
+
+
+nodepool_configs = {
+    nodepool1 = {
+    name          = "common-group"
+    taint         = {key = "group", value = "common", effect = "NoSchedule"}
+    instance_types_karpenter = ["t4g.medium", "c6g.xlarge", "c6g.2xlarge"]
+    capacity_type  = ["spot"]
+    arch          = ["arm64"]
+    
+  },
+    nodepool2 = {
+    name          = "stage-group"
+    taint         = {key = "group", value = "stage", effect = "NoSchedule"}
+    instance_types_karpenter = ["t4g.medium", "c6g.xlarge", "c6g.2xlarge"]
+    capacity_type  = ["spot"]
+    arch          = ["arm64"]
+    
+  
+    
+  }
+}

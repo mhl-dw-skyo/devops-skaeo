@@ -3,11 +3,18 @@
 module "karpenter" {
   source                   = "../../../modules/karpenter"
   env                      = var.env
-  instance_types_karpenter = var.instance_types_karpenter
   enable_karpenter         = var.enable_karpenter
+  nodepool_configs         = var.nodepool_configs
 }
 
+module "irsa" {
+  source =  "../../../modules/irsa"
+  env = var.env
+}
 
+module "storage-class" {
+  source =  "../../../modules/storage-class"
+}
 
 
 

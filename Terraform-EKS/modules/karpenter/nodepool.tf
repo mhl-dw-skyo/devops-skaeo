@@ -1,32 +1,32 @@
 resource "kubernetes_manifest" "nodepool" {
-  count = var.enable_karpenter ? 1 : 0     
+  for_each = var.enable_karpenter ? var.nodepool_configs : {}     
   computed_fields = ["spec.template", "spec.spec", "spec.disruption"]
   manifest  = yamldecode(<<-EOF
     apiVersion: karpenter.sh/v1
     kind: NodePool
     metadata:
-      name: ${local.common_nodepool_name}
+      name: ${each.value.name}
     spec:
       template:
         metadata:
           labels:
-            group: ${local.common_nodepool_name}
+            group: ${each.value.name}
             managed-by: karpenter
         spec:
           requirements:
             - key: "karpenter.sh/capacity-type"
               operator: In
-              values: ["spot"]
+              values: [${join(",", each.value.capacity_type)}]
             - key: "kubernetes.io/arch"
               operator: In
-              values: ["arm64"]
+              values: [${join(",", each.value.arch)}]
             - key: "node.kubernetes.io/instance-type"
               operator: In
-              values: [${join(",", var.instance_types_karpenter)}]
+              values: [${join(",", each.value.instance_types_karpenter)}]
           taints:
-            - key: "group"
-              value: "common"
-              effect: "NoSchedule"
+            - key: ${each.value.taint.key}
+              value: ${each.value.taint.value}
+              effect: ${each.value.taint.effect}
           nodeClassRef:
             group: karpenter.k8s.aws
             kind: EC2NodeClass
@@ -67,6 +67,10 @@ resource "kubernetes_manifest" "ec2nodeclass" {
           "karpenter.sh/discovery" = local.eks_cluster_name
         }
       }]
+      metadataOptions = {
+        httpEndpoint = "enabled"
+        httpTokens = "optional"
+      }
       amiFamily = "AL2"
       amiSelectorTerms = [{
         alias = "al2@latest"
@@ -79,3 +83,6 @@ resource "kubernetes_manifest" "ec2nodeclass" {
   }
   depends_on = [ helm_release.karpenter ]
 }
+
+
+

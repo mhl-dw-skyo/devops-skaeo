@@ -46,6 +46,16 @@ resource "aws_iam_openid_connect_provider" "this" {
   client_id_list = ["sts.amazonaws.com"]
 }
 
+
+resource "aws_ec2_tag" "cluster_primary_security_group" {
+  resource_id = aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id
+  key         = "karpenter.sh/discovery" 
+  value       = "${local.eks_cluster_name}"
+}
+
+
+
+
 resource "aws_eks_node_group" "default_node_group" {
   cluster_name                = aws_eks_cluster.eks.name
   node_group_name             = var.default_node_group.name

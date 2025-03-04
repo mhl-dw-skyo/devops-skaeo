@@ -65,10 +65,20 @@ resource "aws_iam_role_policy" "karpenter_node_custom_policy" {
           "ec2:DescribeInstanceTypes",
           "ec2:DescribeInstanceTypeOfferings",
           "ec2:DescribeAvailabilityZones",
-          "ssm:GetParameter"
+          "ssm:GetParameter",
+          "ec2:RequestSpotInstances",
+          "ec2:CancelSpotInstanceRequests"
         ]
         Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = [
+          "iam:CreateServiceLinkedRole"
+        ]
+        Resource = "arn:aws:iam::${data.aws_caller_identity.current.id}:role/aws-service-role/spot.amazonaws.com/AWSServiceRoleForEC2Spot"
       }
+
     ]
   })
 }
@@ -104,7 +114,9 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "ec2:CreateLaunchTemplate",
           "ec2:CreateFleet",
           "ec2:DescribeSpotPriceHistory",
-          "pricing:GetProducts"
+          "pricing:GetProducts",
+          "ec2:RequestSpotInstances",
+          "ec2:CancelSpotInstanceRequests"
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -183,6 +195,13 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
         Effect   = "Allow"
         Resource = "*"
         Action   = "iam:GetInstanceProfile"
+      },
+      {
+        Effect   = "Allow"
+        Action   = [
+          "iam:CreateServiceLinkedRole"
+        ]
+        Resource = "arn:aws:iam::${data.aws_caller_identity.current.id}:role/aws-service-role/spot.amazonaws.com/AWSServiceRoleForEC2Spot"
       }
     ]
   })

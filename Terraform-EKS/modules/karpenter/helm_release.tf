@@ -11,8 +11,10 @@ resource "helm_release" "karpenter" {
       "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"          = module.eks_irsa_karpenter_controller.arn
       "controller.metrics.enabled"                                         = "true"
       "controller.metrics.port"                                            =  8080
+      "serviceMonitor.enabled"                                             = "true"
+      "serviceMonitor.additionalLabels.release"                            = "kube-stack"  
       "webhook.enabled"                                                    = "false"
-      "replicas"                                                           = 2
+      "replicas"                                                           = 1
       "nodeSelector.group"                                                 = "default_node_group"
     }
     content {
