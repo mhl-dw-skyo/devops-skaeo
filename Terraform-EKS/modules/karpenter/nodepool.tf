@@ -23,10 +23,12 @@ resource "kubernetes_manifest" "nodepool" {
             - key: "node.kubernetes.io/instance-type"
               operator: In
               values: [${join(",", each.value.instance_types_karpenter)}]
+          %{ if try(each.value.taint, null) != null }
           taints:
-            - key: ${each.value.taint.key}
-              value: ${each.value.taint.value}
-              effect: ${each.value.taint.effect}
+            - key: ${each.value.taint["key"]}
+              value: ${each.value.taint["value"]}
+              effect: ${each.value.taint["effect"]}
+          %{ endif }
           nodeClassRef:
             group: karpenter.k8s.aws
             kind: EC2NodeClass

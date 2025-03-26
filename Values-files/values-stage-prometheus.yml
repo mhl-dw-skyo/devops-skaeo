@@ -1260,7 +1260,8 @@ grafana:
     ##
     annotations: 
       #alb.ingress.kubernetes.io/certificate-arn: 
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:124355662943:certificate/c90af58f-9653-4c60-b3fd-b9609f6a4b06
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
       alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=600
       alb.ingress.kubernetes.io/group.name: stage
       alb.ingress.kubernetes.io/scheme: internet-facing
@@ -1280,7 +1281,7 @@ grafana:
     # hosts:
     #   - grafana.domain.com
     hosts: 
-      - grafana.skaeo.com
+      - grafana.myrollcall.pro
 
     ## Path for grafana ingress
     path: /
@@ -3637,7 +3638,8 @@ prometheus:
 
     annotations: 
       #alb.ingress.kubernetes.io/certificate-arn: 
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:124355662943:certificate/c90af58f-9653-4c60-b3fd-b9609f6a4b06
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
       alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=600
       alb.ingress.kubernetes.io/group.name: stage
       alb.ingress.kubernetes.io/scheme: internet-facing
@@ -3655,7 +3657,7 @@ prometheus:
     # hosts:
     #   - prometheus.domain.com
     hosts: 
-      - prometheus.skaeo.com
+      - prometheus.myrollcall.pro
 
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
@@ -3875,7 +3877,7 @@ prometheus:
     ## Defaults to 30s.
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/release-0.44/pkg/prometheus/promcfg.go#L180-L183
     ##
-    scrapeInterval: ""
+    scrapeInterval: "10s"
 
     ## Number of seconds to wait for target to respond before erroring
     ##

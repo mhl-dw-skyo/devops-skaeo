@@ -4,7 +4,7 @@ resource "aws_iam_policy" "alb_controller_policy" {
   path   = "/"
   policy = file("${path.module}/alb-policy.json")
 }
-module "eks_irsa_karpenter_controller" {
+module "eks_irsa_awsloadbalancer_controller" {
     source = "../eks-irsa"
     cluster_name = local.eks_cluster_name
     iam_role_name = "ALBControllerRole-${local.eks_cluster_name}"

@@ -209,6 +209,8 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
 }
 
 
+
+
 module "eks_irsa_karpenter_controller" {
     source = "../eks-irsa"
     cluster_name = local.eks_cluster_name

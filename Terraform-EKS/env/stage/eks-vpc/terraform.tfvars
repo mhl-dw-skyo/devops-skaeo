@@ -25,7 +25,8 @@ default_node_group = {
 }
 
 cluster_access_iamrole = {
-  "test" = "AmazonEKSClusterAdminPolicy"
+  "test" = "AmazonEKSClusterAdminPolicy",
+  "ec2-build-role"  = "AmazonEKSClusterAdminPolicy"
 }
 cluster_access_iamuser = {
   "Vishwaja" = "AmazonEKSClusterAdminPolicy"

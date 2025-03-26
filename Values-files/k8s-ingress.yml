@@ -1,0 +1,30 @@
+    # ingress.yaml
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: kubernetes-dashboard-ingress
+      annotations:
+        alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:124355662943:certificate/c90af58f-9653-4c60-b3fd-b9609f6a4b06
+        alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
+        alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=600
+        alb.ingress.kubernetes.io/group.name: stage
+        alb.ingress.kubernetes.io/scheme: internet-facing
+        alb.ingress.kubernetes.io/subnets: subnet-00f6922b9052cea48,subnet-083afa8f4e83f80e6,subnet-0f60a80bee9260a09
+        alb.ingress.kubernetes.io/success-codes: 200,300,301,302,400,401,402,403,404,405
+        alb.ingress.kubernetes.io/target-type: ip
+        alb.ingress.kubernetes.io/backend-protocol: HTTPS
+      namespace: kubernetes-dashboard
+
+    spec:
+      ingressClassName: alb 
+      rules:
+      - host: kubernetes-dashboard.myrollcall.pro
+        http:
+          paths:
+          - path: /
+            pathType: Prefix # Or Exact
+            backend:
+              service:
+                name: kubernetes-dashboard-kong-proxy
+                port:
+                  number: 443
