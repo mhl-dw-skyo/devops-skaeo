@@ -17,6 +17,7 @@ nodepool_configs = {
   },
     nodepool2 = {
     name          = "stage-group"
+    #taint         = null
     taint         = {key = "group", value = "stage", effect = "NoSchedule"}
     instance_types_karpenter = ["t4g.medium", "c6g.xlarge", "c6g.2xlarge"]
     capacity_type  = ["spot"]
@@ -26,3 +27,5 @@ nodepool_configs = {
     
   }
 }
+
+ecr_repo_names = ["myrollcallpro-web-staging","myrollcallpro-website-staging","myrollcallpro-staging","myrollcallpro-attendance-staging"]

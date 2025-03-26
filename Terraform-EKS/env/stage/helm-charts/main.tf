@@ -17,6 +17,13 @@ module "storage-class" {
 }
 
 
+module "ecr_repositories" {
+  source = "../../../modules/ecr-repo"
+
+  ecr_repo_names = var.ecr_repo_names
+}
+
+
 
 
 

@@ -16,11 +16,16 @@ variable "enable_karpenter" {
 variable "nodepool_configs" {
   type = map(object({
     name          = string
-    taint         = map(string)
+    taint         = optional(map(string))
     instance_types_karpenter = list(string)
     capacity_type  = list(string)
     arch          = list(string)
     
   }))
 
+}
+
+
+variable "ecr_repo_names" {
+  type    = list(string)
 }
